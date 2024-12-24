@@ -1,0 +1,40 @@
+
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slide-in 0.5s forwards, fade-out 3s 2.5s forwards;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    width: 300px;
+}
+
+.popup span {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+}
+
+@keyframes slide-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизація</title>
+    <link rel="stylesheet" href="/static/css/popup.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            padding: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            text-align: left;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Авторизація</h2>
+        
+        <!-- Форма для входу адміністратора -->
+        <form action="/login" method="post">
+            <h3>Увійти як адміністратор</h3>
+            <label for="username">Логін:</label>
+            <input type="text" id="username" name="username" placeholder="Введіть ваш логін" required>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" placeholder="Введіть ваш пароль" required>
+            <button type="submit" name="action" value="admin">Увійти як адміністратор</button>
+        </form>
+
+        <hr>
+
+        <!-- Кнопка для входу як гість -->
+        <h3>Увійти як гість</h3>
+        <form action="/login" method="post">
+            <button type="submit" name="action" value="guest">Увійти як гість</button>
+        </form>
+    </div>
+
+    <script src="/static/popup.js"></script>
+    <script>
+        // Передача flash-повідомлень у попапи
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showPopup("{{ message }}", "{{ category }}", "{{ 'success' if category == 'success' else 'error' }}");
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>

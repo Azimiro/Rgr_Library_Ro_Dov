@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ action }} кафедру</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="/static/css/popup.css">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ action }} літературу</h1>
+
+        <form method="post">
+            <label for="title">Назва</label>
+            <input type="text" id="title" name="title" value="{{ literatura.title if literatura else '' }}" required placeholder="Введіть назву літератури">
+            
+            <label for="author">Автор</label>
+            <input type="text" id="author" name="author" value="{{ literatura.author if literatura else '' }}" placeholder="Введіть ім'я автора (не обов'язково)">
+        
+            <label for="year">Рік видання</label>
+            <input type="number" id="year" name="year" value="{{ literatura.year if literatura else '' }}" placeholder="Введіть рік видання (не обов'язково)">
+        
+            <label for="description">Опис</label>
+            <textarea id="description" name="description" placeholder="Додайте опис літератури (не обов'язково)">{{ literatura.description if literatura else '' }}</textarea>
+            
+            <button type="submit">{{ action }}</button>
+        </form>
+        
+        <!-- Кнопка "Назад" -->
+        <a href="{{ url_for('view_literatura', predmet_id=predmet_id) }}" class="back-link">Назад</a>
+    </div>
+    <script src="/static/popup.js"></script>
+    <script>
+        // Передача flash-повідомлень у попапи
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showPopup("{{ message }}", "{{ category }}", "{{ 'success' if category == 'success' else 'error' }}");
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>

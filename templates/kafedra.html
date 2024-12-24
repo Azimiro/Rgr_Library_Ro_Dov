@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кафедри</title>
+    <link rel="stylesheet" href="/static/css/popup.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .logout-button {
+            display: block;
+            margin: 10px auto 20px auto;
+            text-align: center;
+        }
+        .logout-button a {
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #f44336;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout-button a:hover {
+            background-color: #d32f2f;
+        }
+        .flash-messages div {
+            padding: 10px;
+            margin-bottom: 15px;
+            color: #fff;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .flash-messages .danger {
+            background-color: #f44336;
+        }
+        .flash-messages .success {
+            background-color: #4CAF50;
+        }
+        .flash-messages .info {
+            background-color: #2196F3;
+        }
+        .flash-messages .warning {
+            background-color: #ff9800;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        table thead {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            font-weight: bold;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        table td a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        table td a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .action-buttons a, .action-buttons button {
+            padding: 8px 12px;
+            margin: 5px;
+            color: #fff;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+        .action-buttons a:hover, .action-buttons button:hover {
+            background-color: #45a049;
+        }
+        .action-buttons button {
+            background-color: #f44336;
+        }
+        .action-buttons button:hover {
+            background-color: #d32f2f;
+        }
+        .add-button {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .add-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        .add-button:active {
+            background-color: #388e3c;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Кафедри</h1>
+        
+        <!-- Кнопка "Вийти" -->
+        <div class="logout-button">
+            <a href="{{ url_for('logout') }}">Вийти</a>
+        </div>
+        
+        <!-- Таблиця кафедр -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Опис</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kafedra in kafedra_data %}
+                <tr>
+                    <td><a href="{{ url_for('view_predmet', kafedra_id=kafedra[0]) }}">{{ kafedra[1] }}</a></td>
+                    <td>{{ kafedra[2] }}</td>
+                    <td class="action-buttons">
+                        <a href="{{ url_for('edit_kafedra', kafedra_id=kafedra[0]) }}">Редагувати</a>
+                        <form action="{{ url_for('delete_kafedra', kafedra_id=kafedra[0]) }}" method="POST" style="display:inline;">
+                            <button type="submit">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Кнопка "Додати кафедру" -->
+        <a href="{{ url_for('add_kafedra') }}" class="add-button">Додати кафедру</a>
+    </div>
+    <script src="/static/popup.js"></script>
+    <script>
+        // Передача flash-повідомлень у попапи
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showPopup("{{ message }}", "{{ category }}", "{{ 'success' if category == 'success' else 'error' }}");
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>

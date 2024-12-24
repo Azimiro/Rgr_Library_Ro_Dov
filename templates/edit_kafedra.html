@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ action }} кафедру</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="/static/css/popup.css">
+</head>
+<body>
+    <h1>{{ action }} кафедру</h1>
+
+    <form method="POST">
+        <label for="name">Назва кафедри:</label>
+        <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            placeholder="Введіть назву" 
+            value="{{ kafedra.name if kafedra else '' }}" 
+            required>
+
+        <label for="description">Опис:</label>
+        <textarea 
+            id="description" 
+            name="description" 
+            placeholder="Введіть опис">{{ kafedra.description if kafedra else '' }}</textarea>
+
+        <button type="submit">{{ action }}</button>
+    </form>
+
+    <!-- Кнопка повернення назад -->
+    <div class="back-button">
+        <a href="{{ url_for('view_kafedra') }}">Повернутись до кафедр</a>
+    </div>
+    <script src="/static/popup.js"></script>
+    <script>
+        // Передача flash-повідомлень у попапи
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showPopup("{{ message }}", "{{ category }}", "{{ 'success' if category == 'success' else 'error' }}");
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>
